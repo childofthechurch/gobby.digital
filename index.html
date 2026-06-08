@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gobby.digital</title>
+<style>
+  :root{
+    --bg:#ffffff;
+    --card:#ffffff;
+    --ink:#1c1c1e;
+    --muted:#6b6b70;
+    --accent:#2f6df0;
+    --line:#e7e6e1;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Times New Roman",Times,serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    justify-content:center;
+    padding:48px 20px;
+  }
+  .wrap{width:100%;max-width:880px;}
+
+  header{margin-bottom:28px;}
+  h1{
+    font-size:30px;font-weight:650;letter-spacing:-0.02em;margin:0 0 6px;
+  }
+  header p{margin:0;color:var(--muted);font-size:15px;}
+
+  .gallery{
+    display:block;margin-bottom:28px;
+  }
+  figure{margin:0;}
+  .gallery figure + figure{margin-top:20px;}
+  .audio-under{max-width:320px;margin:18px auto 24px;}
+  .img{
+    width:100%;max-width:308px;margin:0 auto;display:block;
+    box-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06);
+  }
+  .img-wide{max-width:440px;box-shadow:none;}
+  .overlay-fig{position:relative;width:100%;max-width:440px;margin:0 auto;}
+  .fig-burlap{max-width:308px;}
+  .drawing-overlay{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-1.5deg);
+    width:60%;display:block;
+    box-shadow:0 2px 6px rgba(0,0,0,.35);
+  }
+  .buy-overlay{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:auto;padding:12px 26px;font-size:15px;
+    box-shadow:0 4px 14px rgba(0,0,0,.35);
+  }
+  .buy-overlay:active{transform:translate(-50%,-50%) translateY(1px);}
+  figcaption{margin-top:10px;font-size:13px;color:var(--muted);}
+
+  .player{
+    display:flex;flex-direction:column;align-items:center;gap:14px;
+    width:100%;max-width:320px;margin:0 auto;
+  }
+  audio{width:100%;height:40px;}
+
+  .btn{
+    width:50%;
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    text-decoration:none;font-size:14px;font-weight:600;
+    color:#fff;background:var(--accent);
+    padding:11px 18px;border-radius:0;
+    transition:transform .06s ease,background .15s ease;
+  }
+  .btn:hover{background:#255bd0;}
+  .btn:active{transform:translateY(1px);}
+  .btn svg{width:16px;height:16px;}
+  .btn-secondary{
+    width:auto;white-space:nowrap;
+    background:transparent;color:var(--accent);
+    box-shadow:inset 0 0 0 2px var(--accent);
+  }
+  .btn-secondary:hover{background:var(--accent);color:#fff;}
+  .sticker{
+    position:absolute;bottom:-14px;left:-14px;
+    width:104px;height:104px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;text-decoration:none;line-height:1.05;
+    font-family:ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:18px;
+    letter-spacing:.01em;color:#3a2a00;
+    background:
+      radial-gradient(circle at 34% 26%, rgba(255,255,255,.9), rgba(255,255,255,0) 45%),
+      linear-gradient(145deg, #fff0a0 0%, #f6c700 34%, #d49b00 66%, #a9760a 100%);
+    text-shadow:0 1px 0 rgba(255,255,255,.55);
+    clip-path:polygon(50.0% 0.0%, 58.0% 9.8%, 69.1% 3.8%, 72.8% 15.9%, 85.4% 14.6%, 84.1% 27.2%, 96.2% 30.9%, 90.2% 42.0%, 100.0% 50.0%, 90.2% 58.0%, 96.2% 69.1%, 84.1% 72.8%, 85.4% 85.4%, 72.8% 84.1%, 69.1% 96.2%, 58.0% 90.2%, 50.0% 100.0%, 42.0% 90.2%, 30.9% 96.2%, 27.2% 84.1%, 14.6% 85.4%, 15.9% 72.8%, 3.8% 69.1%, 9.8% 58.0%, 0.0% 50.0%, 9.8% 42.0%, 3.8% 30.9%, 15.9% 27.2%, 14.6% 14.6%, 27.2% 15.9%, 30.9% 3.8%, 42.0% 9.8%);
+    filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));
+    transform:rotate(-12deg);
+    transition:transform .1s ease,background .15s ease;
+  }
+  .sticker:hover{transform:rotate(-12deg) scale(1.05);filter:drop-shadow(0 4px 7px rgba(0,0,0,.45)) brightness(1.07);}
+  .sticker:active{transform:rotate(-12deg) scale(.97);}
+  .donate{width:100%;max-width:320px;margin:28px auto 0;text-align:center;}
+  .donate-heading{font-size:18px;font-weight:650;letter-spacing:-0.01em;margin:0 0 14px;}
+  .donate-links{display:flex;gap:12px;justify-content:center;}
+  .donate-links .btn{width:auto;padding:11px 28px;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- ====== IMAGE ====== -->
+    <div class="gallery">
+      <figure>
+        <img class="img" src="untitled_artwork.jpeg" alt="Burlap artwork">
+      </figure>
+      <div class="audio-under">
+        <audio controls preload="metadata">
+          <source src="Idot Plot_48hz_24bit.wav" type="audio/wav">
+        </audio>
+      </div>
+    </div>
+
+    <!-- ====== DOWNLOAD ====== -->
+    <div class="player">
+      <a class="btn" href="Idot Plot_48hz_24bit.wav" download="Idot Plot_48hz_24bit.wav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+        Free download
+      </a>
+    </div>
+
+    <!-- ====== DONATE ====== -->
+    <div class="donate">
+      <h2 class="donate-heading">Pay if you want:</h2>
+      <div class="donate-links">
+        <a class="btn" href="https://www.paypal.com/paypalme/GobbyDu" target="_blank" rel="noopener">
+          PayPal
+        </a>
+        <a class="btn" href="https://venmo.com/u/GobbyDu" target="_blank" rel="noopener">
+          Venmo
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
