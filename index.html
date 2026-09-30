@@ -100,6 +100,16 @@
     display:flex;align-items:center;justify-content:center;
     border:1px dashed var(--line);color:var(--muted);font-size:16px;
   }
+
+  /* Mobile: swipe vertically through pages instead of horizontally. */
+  @media (max-width:700px){
+    .lightbox-strip{
+      flex-direction:column;width:100%;
+      padding:5vh 0;
+      overflow-x:hidden;overflow-y:auto;
+      scroll-snap-type:y mandatory;
+    }
+  }
 </style>
 </head>
 <body>
@@ -171,7 +181,12 @@
     function openLightbox(i) {
       lightbox.classList.add('open');
       lightbox.setAttribute('aria-hidden', 'false');
-      stripItems[i].scrollIntoView({ behavior: 'instant', inline: 'center', block: 'nearest' });
+      const vertical = window.matchMedia('(max-width:700px)').matches;
+      stripItems[i].scrollIntoView({
+        behavior: 'instant',
+        inline: vertical ? 'nearest' : 'center',
+        block: vertical ? 'center' : 'nearest',
+      });
     }
 
     function closeLightbox() {
