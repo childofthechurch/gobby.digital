@@ -15,7 +15,7 @@
     --radius:16px;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  html,body{margin:0;padding:0;height:100%;}
   body{
     font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;
     background:var(--bg);
@@ -23,113 +23,167 @@
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
     display:flex;
-    justify-content:center;
-    padding:48px 20px;
+    flex-direction:column;
+    padding:48px 20px 0;
   }
-  .wrap{width:100%;max-width:880px;}
 
-  header{margin-bottom:28px;}
-  h1{
-    font-size:30px;font-weight:650;letter-spacing:-0.02em;margin:0 0 6px;
+  .nav-wrap{width:100%;max-width:880px;margin:0 auto;}
+  nav{margin-bottom:28px;display:flex;justify-content:center;gap:20px;}
+  nav a{
+    color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;
+    letter-spacing:-0.01em;
+    transition:color .15s ease;
   }
-  header p{margin:0;color:var(--muted);font-size:15px;}
+  nav a:not(.active){color:#c7c7cc;}
+  nav a:not(.active):hover{color:var(--ink);}
+  nav a.active{
+    background:#fef08a;
+    padding:1px 5px;
+    box-decoration-break:clone;
+    -webkit-box-decoration-break:clone;
+  }
 
-  .gallery{
-    display:block;margin-bottom:28px;
+  .grid-wrap{
+    flex:1;min-height:0;
+    overflow-y:auto;
+    padding:20px;
   }
-  figure{margin:0;}
-  .gallery figure + figure{margin-top:20px;}
-  .audio-under{max-width:320px;margin:18px auto 24px;}
-  .img{
-    width:100%;max-width:308px;margin:0 auto;display:block;
-    box-shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06);
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));
+    gap:12px;
+    max-width:1400px;
+    margin:0 auto;
   }
-  .img-wide{max-width:440px;box-shadow:none;}
-  .overlay-fig{position:relative;width:100%;max-width:440px;margin:0 auto;}
-  .fig-burlap{max-width:308px;}
-  .drawing-overlay{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-1.5deg);
-    width:60%;display:block;
-    box-shadow:0 2px 6px rgba(0,0,0,.35);
+  .page-cell{
+    position:relative;aspect-ratio:2/3;
+    background:#f4f3ee;
+    overflow:hidden;
   }
-  .buy-overlay{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:auto;padding:12px 26px;font-size:15px;
-    box-shadow:0 4px 14px rgba(0,0,0,.35);
+  .page-cell img{
+    width:100%;height:100%;object-fit:cover;display:block;
   }
-  .buy-overlay:active{transform:translate(-50%,-50%) translateY(1px);}
-  figcaption{margin-top:10px;font-size:13px;color:var(--muted);}
+  .page-cell.placeholder{
+    display:flex;align-items:center;justify-content:center;
+    border:1px dashed var(--line);
+    color:var(--muted);font-size:12px;
+  }
+  .page-cell{cursor:pointer;}
 
-  .player{
-    display:flex;flex-direction:column;align-items:center;gap:14px;
-    width:100%;max-width:320px;margin:0 auto;
+  .lightbox{
+    position:fixed;inset:0;z-index:1000;
+    background:#fff;
+    opacity:0;pointer-events:none;
+    transition:opacity .2s ease;
   }
-  audio{width:100%;height:40px;}
-
-  .btn{
-    width:50%;
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    text-decoration:none;font-size:14px;font-weight:600;
-    color:#fff;background:var(--accent);
-    padding:11px 18px;border-radius:0;
-    transition:transform .06s ease,background .15s ease;
+  .lightbox.open{opacity:1;pointer-events:auto;}
+  .lightbox-close{
+    position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:20px;z-index:2;
+    width:36px;height:36px;border:none;border-radius:50%;
+    background:rgba(0,0,0,.06);color:var(--ink);font-size:20px;line-height:1;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
   }
-  .btn:hover{background:#255bd0;}
-  .btn:active{transform:translateY(1px);}
-  .btn svg{width:16px;height:16px;}
-  .btn-secondary{
-    width:auto;white-space:nowrap;
-    background:transparent;color:var(--accent);
-    box-shadow:inset 0 0 0 2px var(--accent);
+  .lightbox-close:hover{background:rgba(0,0,0,.12);}
+  .lightbox-strip{
+    height:100%;display:flex;align-items:center;gap:24px;
+    padding:0 5vw;overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
   }
-  .btn-secondary:hover{background:var(--accent);color:#fff;}
-  .sticker{
-    position:absolute;bottom:-14px;left:-14px;
-    width:104px;height:104px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;text-decoration:none;line-height:1.05;
-    font-family:ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:18px;
-    letter-spacing:.01em;color:#3a2a00;
-    background:
-      radial-gradient(circle at 34% 26%, rgba(255,255,255,.9), rgba(255,255,255,0) 45%),
-      linear-gradient(145deg, #fff0a0 0%, #f6c700 34%, #d49b00 66%, #a9760a 100%);
-    text-shadow:0 1px 0 rgba(255,255,255,.55);
-    clip-path:polygon(50.0% 0.0%, 58.0% 9.8%, 69.1% 3.8%, 72.8% 15.9%, 85.4% 14.6%, 84.1% 27.2%, 96.2% 30.9%, 90.2% 42.0%, 100.0% 50.0%, 90.2% 58.0%, 96.2% 69.1%, 84.1% 72.8%, 85.4% 85.4%, 72.8% 84.1%, 69.1% 96.2%, 58.0% 90.2%, 50.0% 100.0%, 42.0% 90.2%, 30.9% 96.2%, 27.2% 84.1%, 14.6% 85.4%, 15.9% 72.8%, 3.8% 69.1%, 9.8% 58.0%, 0.0% 50.0%, 9.8% 42.0%, 3.8% 30.9%, 15.9% 27.2%, 14.6% 14.6%, 27.2% 15.9%, 30.9% 3.8%, 42.0% 9.8%);
-    filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));
-    transform:rotate(-12deg);
-    transition:transform .1s ease,background .15s ease;
+  .lightbox-item{
+    max-height:90vh;width:auto;flex:0 0 auto;
+    scroll-snap-align:center;
   }
-  .sticker:hover{transform:rotate(-12deg) scale(1.05);filter:drop-shadow(0 4px 7px rgba(0,0,0,.45)) brightness(1.07);}
-  .sticker:active{transform:rotate(-12deg) scale(.97);}
-  .donate{width:100%;max-width:320px;margin:28px auto 0;text-align:center;}
-  .donate-heading{font-size:14px;font-weight:650;letter-spacing:-0.01em;margin:0 0 14px;}
-  .donate-links{display:flex;gap:12px;justify-content:center;}
-  .donate-links .btn{width:auto;font-size:11px;padding:9px 22px;}
+  img.lightbox-item{display:block;object-fit:contain;}
+  div.lightbox-item{
+    aspect-ratio:2/3;height:90vh;
+    display:flex;align-items:center;justify-content:center;
+    border:1px dashed var(--line);color:var(--muted);font-size:16px;
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
 
-    <!-- ====== IMAGE ====== -->
-    <div class="gallery">
-      <figure>
-        <img class="img" src="Untitled_Artwork.jpeg" alt="Burlap artwork">
-      </figure>
-      <div class="audio-under">
-        <audio controls preload="metadata">
-          <source src="https://pub-109757275e544a068e7f488a25775c87.r2.dev/Idot%20Plot_48hz_24bit.wav" type="audio/wav">
-        </audio>
-      </div>
-    </div>
-
-    <!-- ====== DOWNLOAD ====== -->
-    <div class="player">
-      <a class="btn" href="https://pub-109757275e544a068e7f488a25775c87.r2.dev/Idot%20Plot_48hz_24bit.wav" download="Idot Plot_48hz_24bit.wav">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
-        Free download
-      </a>
-      <a class="btn" href="https://bb6b62-2.myshopify.com/products/idiot-plot-cd-limited-edition-2026" target="_blank" rel="noopener" style="text-align:center;">Buy Limited Edition CD</a>
-    </div>
+  <div class="nav-wrap">
+    <nav>
+      <a href="index.html" class="active">nature show</a>
+      <a href="idiot_plot_CD.html">idiot plot cd</a>
+    </nav>
   </div>
+
+  <!-- ====== PAGES ======
+       List real scan filenames (in reading order) in the PAGES array below.
+       Any slot beyond PAGES.length up to TOTAL_PAGES renders as a placeholder. -->
+  <div class="grid-wrap">
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <div class="lightbox-strip" id="lightboxStrip"></div>
+  </div>
+
+  <script>
+    const TOTAL_PAGES = 97;
+    const PAGES = Array.from(
+      { length: TOTAL_PAGES },
+      (_, i) => `nature%20show/Nature_Show-${i + 1}.jpg`
+    );
+
+    const grid = document.getElementById('grid');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxStrip = document.getElementById('lightboxStrip');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    const stripItems = [];
+
+    for (let i = 0; i < TOTAL_PAGES; i++) {
+      const hasImage = i < PAGES.length;
+
+      const cell = document.createElement('div');
+      cell.className = 'page-cell';
+      const stripItem = hasImage ? document.createElement('img') : document.createElement('div');
+      stripItem.className = 'lightbox-item';
+
+      if (hasImage) {
+        const img = document.createElement('img');
+        img.src = PAGES[i];
+        img.alt = `Page ${i + 1}`;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        cell.appendChild(img);
+
+        stripItem.src = PAGES[i];
+        stripItem.alt = `Page ${i + 1}`;
+        stripItem.decoding = 'async';
+      } else {
+        cell.classList.add('placeholder');
+        cell.textContent = i + 1;
+        stripItem.textContent = i + 1;
+      }
+
+      cell.addEventListener('click', () => openLightbox(i));
+      grid.appendChild(cell);
+      lightboxStrip.appendChild(stripItem);
+      stripItems.push(stripItem);
+    }
+
+    function openLightbox(i) {
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      stripItems[i].scrollIntoView({ behavior: 'instant', inline: 'center', block: 'nearest' });
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+    });
+  </script>
 </body>
 </html>
