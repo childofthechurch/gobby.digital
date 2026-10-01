@@ -201,6 +201,12 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
     });
+
+    // On mobile, skip the thumbnail grid - land straight in the full-page
+    // swipe-through view so scrolling immediately moves through pages.
+    if (window.matchMedia('(max-width:700px)').matches && stripItems.length) {
+      openLightbox(0);
+    }
   </script>
 </body>
 </html>
